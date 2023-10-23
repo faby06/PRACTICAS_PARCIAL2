@@ -1,6 +1,6 @@
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt #importa una biblioteca para poder usar 'plt'
 
-# Definición de nodos y conexiones
+# Creacion de grafo 
 nodes = {
     'A': [(1, 2), {'B': 1, 'C': 4}],
     'B': [(2, 3), {'A': 1, 'C': 2, 'D': 5}],
@@ -10,21 +10,21 @@ nodes = {
 
 # Función para el algoritmo de Dijkstra
 def dijkstra(graph, start):
-    distances = {node: float('inf') for node in graph}
-    distances[start] = 0
-    unvisited_nodes = graph.copy()
+    distances = {node: float('inf') for node in graph}  # Inicializa todas las distancias a infinito
+    distances[start] = 0  # Establece la distancia al nodo de inicio en 0
+    unvisited_nodes = graph.copy()  # Copia de todos los nodos no visitados
 
-    while unvisited_nodes:
-        current_node = min(unvisited_nodes, key=lambda node: distances[node])
-        unvisited_nodes.pop(current_node)
+    while unvisited_nodes:  # Mientras haya nodos no visitados
+        current_node = min(unvisited_nodes, key=lambda node: distances[node])  # Encuentra el nodo con la distancia más pequeña
+        unvisited_nodes.pop(current_node)  # Marca el nodo actual como visitado
 
-        for neighbor, weight in graph[current_node][1].items():
-            potential_route = distances[current_node] + weight
+        for neighbor, weight in graph[current_node][1].items():  # Explora los vecinos del nodo actual
+            potential_route = distances[current_node] + weight  # Calcula la distancia potencial al vecino
 
-            if potential_route < distances[neighbor]:
-                distances[neighbor] = potential_route
+            if potential_route < distances[neighbor]:  # Si la distancia potencial es menor que la distancia registrada
+                distances[neighbor] = potential_route  # Actualiza la distancia registrada
 
-    return distances
+    return distances  # Devuelve las distancias mínimas
 
 # Obtener las distancias mínimas desde el nodo 'A'
 distances = dijkstra(nodes, 'A')
@@ -32,9 +32,9 @@ distances = dijkstra(nodes, 'A')
 # Dibujar el grafo
 fig, ax = plt.subplots()
 for node, (pos, _) in nodes.items():
-    plt.scatter(*pos, c='r', s=100)
-    plt.text(pos[0], pos[1], f'{node}({distances[node]})', fontsize=12)
-    for neighbor, weight in nodes[node][1].items():
-        plt.plot([pos[0], nodes[neighbor][0][0]], [pos[1], nodes[neighbor][0][1]], 'b')
+    plt.scatter(*pos, c='r', s=100)  # Dibuja el nodo como un punto rojo
+    plt.text(pos[0], pos[1], f'{node}({distances[node]})', fontsize=12)  # Etiqueta el nodo con su nombre y distancia
+    for neighbor, weight in nodes[node][1].items():  # Recorre los vecinos del nodo
+        plt.plot([pos[0], nodes[neighbor][0][0]], [pos[1], nodes[neighbor][0][1]], 'b')  # Dibuja una línea hacia el vecino
 
-plt.show()
+plt.show()  # Muestra el gráfico
